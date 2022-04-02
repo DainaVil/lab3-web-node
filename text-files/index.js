@@ -32,7 +32,7 @@ async function findSalesFiles(folderName) {
 }
 
 async function main() {
-  const salesFiles = await findSalesFiles("../stores");
+  const salesFiles = await findSalesFiles("stores");
   console.log(salesFiles);
 }
 
