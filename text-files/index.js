@@ -1,6 +1,19 @@
 const fs = require("fs").promises;
 const path = require("path");
 
+async function calculateSalesTotal(salesFiles) { 
+  let total = 0;
+  // проходимся по всем файлам из списка, кроме total.json
+  for (file of salesFiles){
+    if (!file.includes("total.js")) {
+      let data_json = require(file); // читаем файл
+      // console.log(data_json)
+      total += +data_json.total;
+    }
+  }
+  return total;
+}
+
 async function findSalesFiles(folderName) {
   // массив будет содержать файлы продаж по мере их обнаружения 
   let salesFiles = [];
@@ -32,17 +45,19 @@ async function findSalesFiles(folderName) {
 }
 
 async function main() {
-       const salesDir = path.join(__dirname, "stores");
-       const salesTotalsDir = path.join(__dirname, "salesTotals");
-       try {
-         await fs.mkdir(salesTotalsDir);
-       } catch {
-         console.log(`${salesTotalsDir} уже существует!`);
-        }
-       const salesFiles = await findSalesFiles(salesDir);
-      console.log(salesFiles);
-      await fs.writeFile(path.join(salesTotalsDir, "totals.txt"), String());
-
+    const salesDir = path.join(__dirname, "stores");
+    const salesTotalsDir = path.join(__dirname, "salesTotals");
+    try {
+      await fs.mkdir(salesTotalsDir);
+    } catch {
+      console.log(`${salesTotalsDir} уже существует!`);
+    }
+    const salesFiles = await findSalesFiles(salesDir);
+    const salesTotal = await calculateSalesTotal(salesFiles);
+    await fs.writeFile(
+      path.join(salesTotalsDir, "result.txt"),
+      `${salesTotal}\r\n`,
+      { flag: "a" }); 
 }
 
 main();
