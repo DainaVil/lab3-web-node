@@ -1,0 +1,14 @@
+Last login: Fri Apr  1 19:36:13 on ttys002
+
+daina@Dainas-MacBook-Pro lab3 % git checkout tasks
+Switched to branch 'tasks'
+daina@Dainas-MacBook-Pro lab3 % cd text-files 
+daina@Dainas-MacBook-Pro text-files % cd 1 
+daina@Dainas-MacBook-Pro 1 % node index.js
+[
+  '../stores/201/sales.json',
+  '../stores/202/sales.json',
+  '../stores/203/sales.json',
+  '../stores/204/sales.json'
+]
+daina@Dainas-MacBook-Pro 1 % 
