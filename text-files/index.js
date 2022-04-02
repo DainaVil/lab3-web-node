@@ -1,4 +1,5 @@
 const fs = require("fs").promises;
+const path = require("path");
 
 async function findSalesFiles(folderName) {
   // массив будет содержать файлы продаж по мере их обнаружения 
@@ -12,17 +13,16 @@ async function findSalesFiles(folderName) {
     for (item of items) {
       // если элемент является каталогом, в нем нужно будет искать файлы
       if (item.isDirectory()) {
-        // рекурсивно искать в этом каталоге файлы
-        await findFiles(`${folderName}/${item.name}`);  
+        await findFiles(path.join(folderName, item.name));  
       } else {
         // Убедитесь, что обнаруженный файл является файлом sales.json
-        if (item.name === "sales.json") {
-          // сохранить путь к файлу в массиве salesFiles
-          salesFiles.push(`${folderName}/${item.name}`);
-        }
+        if (path.extname(item.name) === ".json") {
+          await salesFiles.push(path.join(folderName, item.name));
+        } 
       }
     }
   }
+
 
   // найти файлы продаж
   await findFiles(folderName);
@@ -32,8 +32,9 @@ async function findSalesFiles(folderName) {
 }
 
 async function main() {
-  const salesFiles = await findSalesFiles("stores");
-  console.log(salesFiles);
+  const salesDir = path.join(__dirname, "stores");
+  const salesFiles = await findSalesFiles(salesDir);
+    console.log(salesFiles);
 }
 
 main();
